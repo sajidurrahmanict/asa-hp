@@ -12,6 +12,7 @@ import {
   MapPin,
   ArrowUpRight,
   Activity,
+  X,
 } from 'lucide-react';
 import { ONGOING_PROJECTS, IMPLEMENTED_PROJECTS, type Project } from '../lib/data';
 
@@ -46,12 +47,16 @@ const SUMMARY = [
 
 type ProjectWithStatus = Project & { status: 'ongoing' | 'implemented' };
 
-function ProjectCard({ p }: { p: ProjectWithStatus }) {
+function ProjectCard({ p, onOpen }: { p: ProjectWithStatus; onOpen: (project: ProjectWithStatus) => void }) {
   const Icon = iconFor(p);
   const isOngoing = p.status === 'ongoing';
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-sand-200 bg-white shadow-sm transition hover:shadow-lg hover:shadow-brand-900/8">
+    <button
+      type="button"
+      onClick={() => onOpen(p)}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-sand-200 bg-white shadow-sm transition hover:shadow-lg hover:shadow-brand-900/8 text-left"
+    >
       {/* Image */}
       <div className="relative h-44 overflow-hidden">
         <img
@@ -126,17 +131,18 @@ function ProjectCard({ p }: { p: ProjectWithStatus }) {
             Budget: <span className="font-semibold text-ink-800">{p.budget}</span>
           </span>
           <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-700 transition group-hover:gap-2">
-            Details <ArrowUpRight className="h-3.5 w-3.5" />
+            View details <ArrowUpRight className="h-3.5 w-3.5" />
           </span>
         </div>
       </div>
-    </article>
+    </button>
   );
 }
 
 export default function Programs() {
   const [tab, setTab] = useState<'all' | 'ongoing' | 'implemented'>('all');
   const [category, setCategory] = useState<string>('All');
+  const [selected, setSelected] = useState<ProjectWithStatus | null>(null);
 
   const filtered = ALL_PROJECTS.filter((p) => {
     if (tab === 'ongoing' && p.status !== 'ongoing') return false;
@@ -228,7 +234,7 @@ export default function Programs() {
         {/* Grid */}
         <div key={`${tab}-${category}`} className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => (
-            <ProjectCard key={p.name} p={p} />
+            <ProjectCard key={p.name} p={p} onOpen={setSelected} />
           ))}
         </div>
 
@@ -241,6 +247,81 @@ export default function Programs() {
             >
               Reset filters
             </button>
+          </div>
+        )}
+
+        {selected && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-6 backdrop-blur-sm">
+            <div className="w-full max-w-4xl overflow-hidden rounded-[2rem] border border-sand-200 bg-white shadow-2xl">
+              <div className="flex items-start justify-between gap-4 border-b border-sand-200 bg-sand-50 px-6 py-5">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.24em] text-brand-700">
+                    {selected.status === 'ongoing' ? 'Ongoing Project' : 'Completed Project'}
+                  </p>
+                  <h3 className="mt-2 text-3xl font-semibold text-ink-900">
+                    {selected.name}
+                  </h3>
+                  <p className="mt-2 text-sm text-ink-600">{selected.category}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelected(null)}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-sand-200 bg-white text-ink-700 transition hover:bg-sand-100"
+                  aria-label="Close project details"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="grid gap-6 px-6 py-6 lg:grid-cols-[1.35fr_0.85fr] lg:px-8">
+                <div className="space-y-6">
+                  <img
+                    src={selected.image}
+                    alt={selected.name}
+                    className="h-72 w-full rounded-[1.5rem] object-cover"
+                  />
+                  <div className="space-y-4 text-ink-700">
+                    <p className="leading-relaxed">{selected.activities}</p>
+                    {selected.objectives && (
+                      <div className="rounded-3xl border border-sand-200 bg-sand-50 p-5">
+                        <p className="font-semibold text-ink-900">Objectives</p>
+                        <p className="mt-3 text-sm leading-relaxed text-ink-700">
+                          {selected.objectives}
+                        </p>
+                      </div>
+                    )}
+                    <p className="text-sm leading-relaxed text-ink-700">
+                      For more details about this project, please contact HP or visit the Programs section.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 rounded-[1.5rem] border border-sand-200 bg-sand-50 p-6">
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-ink-500">Donor</p>
+                      <p className="mt-2 font-semibold text-ink-900">{selected.donor}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-ink-500">Duration</p>
+                      <p className="mt-2 font-semibold text-ink-900">{selected.duration}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-ink-500">Coverage</p>
+                      <p className="mt-2 font-semibold text-ink-900">{selected.areas}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-ink-500">Beneficiaries</p>
+                      <p className="mt-2 font-semibold text-ink-900">{selected.beneficiary}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-ink-500">Budget</p>
+                      <p className="mt-2 font-semibold text-ink-900">{selected.budget}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -1,37 +1,38 @@
-import { Users, ShieldCheck, UserCog } from 'lucide-react';
+import { Users, ShieldCheck, UserCog, Briefcase } from 'lucide-react';
 import {
   EXECUTIVE_BODY,
   GENERAL_BOARD,
   SENIOR_PERSONNEL,
 } from '../lib/data';
 
-function MemberTable({
+function MemberCards({
   rows,
   accent,
+  cols = 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
 }: {
   rows: { name: string; designation: string }[];
   accent: string;
+  cols?: string;
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-sand-200 bg-white">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="bg-sand-50 text-xs uppercase tracking-wider text-ink-500">
-            <th className="w-12 px-4 py-3 font-bold">#</th>
-            <th className="px-4 py-3 font-bold">Name</th>
-            <th className="px-4 py-3 font-bold">Designation</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-sand-100">
-          {rows.map((r, i) => (
-            <tr key={r.name + i} className="transition hover:bg-brand-50/40">
-              <td className={`px-4 py-3 font-bold ${accent}`}>{i + 1}</td>
-              <td className="px-4 py-3 font-medium text-ink-800">{r.name}</td>
-              <td className="px-4 py-3 text-ink-600">{r.designation}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className={`grid gap-4 ${cols}`}>
+      {rows.map((r, i) => (
+        <div
+          key={r.name + i}
+          className="flex items-start gap-4 rounded-3xl border border-sand-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-lg"
+        >
+          <span className={`flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-brand-50 font-serif text-lg font-semibold text-brand-700 ${accent}`}>
+            {i + 1}
+          </span>
+          <div className="min-w-0">
+            <div className="font-medium text-ink-800 break-words">{r.name}</div>
+            <div className="mt-2 flex items-center gap-2 text-sm text-ink-500 break-words">
+              <Briefcase className="h-4 w-4 text-ocean-500" />
+              <span>{r.designation}</span>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -61,7 +62,7 @@ export default function Management() {
                 A. Executive Body
               </h3>
             </div>
-            <MemberTable rows={EXECUTIVE_BODY} accent="text-brand-600" />
+            <MemberCards rows={EXECUTIVE_BODY} accent="text-brand-600" cols="grid-cols-1 sm:grid-cols-2" />
           </div>
           <div>
             <div className="mb-4 flex items-center gap-2">
@@ -70,7 +71,7 @@ export default function Management() {
                 B. General Board (GB)
               </h3>
             </div>
-            <MemberTable rows={GENERAL_BOARD} accent="text-ocean-600" />
+            <MemberCards rows={GENERAL_BOARD} accent="text-ocean-600" cols="grid-cols-1 sm:grid-cols-2" />
           </div>
         </div>
 
@@ -82,22 +83,11 @@ export default function Management() {
               Senior Personnel
             </h3>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SENIOR_PERSONNEL.map((p, i) => (
-              <div
-                key={p.name + i}
-                className="card flex items-start gap-4 hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-brand-50 font-serif text-lg font-semibold text-brand-700">
-                  {p.name.split(' ').slice(0, 2).map((w) => w[0]).join('')}
-                </span>
-                <div>
-                  <div className="font-medium text-ink-800">{p.name}</div>
-                  <div className="text-sm text-ink-500">{p.designation}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <MemberCards
+            rows={SENIOR_PERSONNEL}
+            accent="text-sand-700"
+            cols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          />
         </div>
       </div>
     </section>

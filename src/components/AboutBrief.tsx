@@ -60,12 +60,16 @@ export default function AboutBrief() {
         {/* Right — side card */}
         <div className="lg:col-span-5">
           <div className="sticky top-28 overflow-hidden rounded-3xl border border-sand-200 bg-white shadow-xl shadow-brand-900/10">
-            <div className="relative h-44 bg-gradient-to-br from-brand-800 to-brand-950 p-6">
-              <div className="absolute inset-0 bg-grid opacity-30" />
-              <Globe2 className="h-10 w-10 text-white/90" />
-              <div className="relative mt-3">
-                <div className="font-serif text-3xl font-semibold text-white">64</div>
-                <div className="text-sm text-brand-50">Districts of Bangladesh</div>
+            <div className="relative h-56 overflow-hidden bg-sand-50">
+              <img
+                src="/images/map.png"
+                alt="Bangladesh map showing district coverage"
+                className="h-full w-full object-contain"
+              />
+              <div className="absolute inset-0 bg-black/10" />
+              <div className="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-sm font-semibold text-ink-900 shadow-sm">
+                <Globe2 className="h-4 w-4 text-ocean-500" />
+                64 districts covered
               </div>
             </div>
             <div className="p-6">

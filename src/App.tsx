@@ -11,23 +11,34 @@ import NewsUpdates from './components/NewsUpdates';
 import Downloads from './components/Downloads';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Admin from './components/Admin';
 
 export default function App() {
+  const isAdmin =
+    typeof window !== 'undefined' &&
+    (window.location.pathname === '/admin' || window.location.hash === '#admin' || window.location.hash === '#/admin');
+
   return (
     <div className="min-h-screen bg-sand-50">
       <Header />
       <main>
-        <Hero />
-        <AboutBrief />
-        <Founder />
-        <Management />
-        <Organogram />
-        <MissionVision />
-        <Programs />
-        <NoticeBoard />
-        <NewsUpdates />
-        <Downloads />
-        <Contact />
+        {isAdmin ? (
+          <Admin />
+        ) : (
+          <>
+            <Hero />
+            <AboutBrief />
+            <Founder />
+            <Management />
+            <Organogram />
+            <MissionVision />
+            <Programs />
+            <NoticeBoard />
+            <NewsUpdates />
+            <Downloads />
+            <Contact />
+          </>
+        )}
       </main>
       <Footer />
     </div>

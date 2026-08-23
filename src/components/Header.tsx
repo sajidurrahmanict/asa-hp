@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Heart, Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '../lib/data';
 
 export default function Header() {
@@ -64,9 +64,10 @@ export default function Header() {
         <div className="hidden lg:block">
           <a
             href="#contact"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-800 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-900/30 transition hover:bg-brand-900"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-ocean-500 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-ocean-900/20 transition hover:bg-ocean-600"
           >
-            Get in touch
+            <Heart className="h-4 w-4" />
+            Donate
           </a>
         </div>
 
@@ -102,9 +103,10 @@ export default function Header() {
           <a
             href="#contact"
             onClick={() => setOpen(false)}
-            className="mt-2 rounded-full bg-brand-800 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-brand-900"
+            className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-ocean-500 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-ocean-900/20 transition hover:bg-ocean-600"
           >
-            Get in touch
+            <Heart className="h-4 w-4" />
+            Donate
           </a>
         </nav>
       </div>
